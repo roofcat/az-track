@@ -365,10 +365,6 @@ class Email(models.Model):
             count_total = Email.objects.filter(
                 input_date__range=(date_from, date_to),
                 empresa=empresa).count()
-            count_processed = Email.objects.filter(
-                input_date__range=(date_from, date_to),
-                processed_event='processed',
-                empresa=empresa).count()
             count_delivered = Email.objects.filter(
                 input_date__range=(date_from, date_to),
                 delivered_event='delivered',
@@ -388,11 +384,6 @@ class Email(models.Model):
         else:
             count_total = Email.objects.filter(
                 input_date__range=(date_from, date_to),
-                tipo_receptor=tipo_receptor,
-                empresa=empresa).count()
-            count_processed = Email.objects.filter(
-                input_date__range=(date_from, date_to),
-                processed_event='processed',
                 tipo_receptor=tipo_receptor,
                 empresa=empresa).count()
             count_delivered = Email.objects.filter(
@@ -417,7 +408,6 @@ class Email(models.Model):
                 empresa=empresa).count()
         return {
             'total': count_total,
-            'processed': count_processed,
             'delivered': count_delivered,
             'opened': count_opened,
             'dropped': count_dropped,
