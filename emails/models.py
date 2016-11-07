@@ -10,7 +10,7 @@ import logging
 
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
-from django.db.models import Count, Q
+from django.db.models import Count, Q, Case, When, Sum, IntegerField, Value
 
 
 from boto.gs.connection import GSConnection
@@ -320,99 +320,49 @@ class Email(models.Model):
         )
         return email
 
-    # funcion utilizada desde el webhook api
-    @classmethod
-    def get_email(self, correo, numero_folio, tipo_dte,
-                  rut_emisor, resolucion_emisor, id_envio):
-        if isinstance(numero_folio, (str, basestring)):
-            numero_folio = int(numero_folio, base=10)
-
-        if isinstance(tipo_dte, (str, basestring)):
-            tipo_dte = int(tipo_dte, base=10)
-
-        if isinstance(resolucion_emisor, (str, basestring)):
-            resolucion_emisor = int(resolucion_emisor, base=10)
-
-        if isinstance(id_envio, (str, basestring)):
-            id_envio = int(id_envio, base=10)
-
-        try:
-            email = Email.objects.filter(
-                correo=correo,
-                numero_folio=numero_folio,
-                tipo_dte_id=tipo_dte,
-                rut_emisor=rut_emisor,
-                resolucion_emisor=resolucion_emisor,
-                id_envio=id_envio,
-            ).order_by('-input_date')[:1]
-            logger.info(email)
-            logger.info(len(email))
-            logger.info(email.query)
-
-            if len(email) > 0:
-                return email[0]
-            else:
-                return None
-        except Exception, e:
-            logger.error(e)
-            return None
-
-    # MÉTODOS DE CONSULTAS (para no repetir código)
     @classmethod
     def get_statistics_count_by_dates(self, date_from, date_to,
                                       empresa, tipo_receptor='all'):
-        if tipo_receptor == 'all':
-            count_total = Email.objects.filter(
-                input_date__range=(date_from, date_to),
-                empresa=empresa).count()
-            count_delivered = Email.objects.filter(
-                input_date__range=(date_from, date_to),
-                delivered_event='delivered',
-                empresa=empresa).count()
-            count_opened = Email.objects.filter(
-                input_date__range=(date_from, date_to),
-                opened_event='open',
-                empresa=empresa).count()
-            count_dropped = Email.objects.filter(
-                input_date__range=(date_from, date_to),
-                dropped_event='dropped',
-                empresa=empresa).count()
-            count_bounce = Email.objects.filter(
-                input_date__range=(date_from, date_to),
-                bounce_event='bounce',
-                empresa=empresa).count()
-        else:
-            count_total = Email.objects.filter(
-                input_date__range=(date_from, date_to),
-                tipo_receptor=tipo_receptor,
-                empresa=empresa).count()
-            count_delivered = Email.objects.filter(
-                input_date__range=(date_from, date_to),
-                delivered_event='delivered',
-                tipo_receptor=tipo_receptor,
-                empresa=empresa).count()
-            count_opened = Email.objects.filter(
-                input_date__range=(date_from, date_to),
-                opened_event='open',
-                tipo_receptor=tipo_receptor,
-                empresa=empresa).count()
-            count_dropped = Email.objects.filter(
-                input_date__range=(date_from, date_to),
-                dropped_event='dropped',
-                tipo_receptor=tipo_receptor,
-                empresa=empresa).count()
-            count_bounce = Email.objects.filter(
-                input_date__range=(date_from, date_to),
-                bounce_event='bounce',
-                tipo_receptor=tipo_receptor,
-                empresa=empresa).count()
-        return {
-            'total': count_total,
-            'delivered': count_delivered,
-            'opened': count_opened,
-            'dropped': count_dropped,
-            'bounced': count_bounce,
-        }
+        query_params = dict()
+        query_params['input_date__range'] = (date_from, date_to)
+        query_params['empresa'] = empresa
+        if tipo_receptor != 'all':
+            query_params['tipo_receptor'] = tipo_receptor
+
+        statistics = Email.objects.filter(
+            **query_params
+        ).aggregate(
+            total=Count('input_date'),
+            delivered=Sum(
+                Case(
+                    When(delivered_event='delivered', then=1),
+                    default=Value(0),
+                    output_field=IntegerField(),
+                ),
+            ),
+            opened=Sum(
+                Case(
+                    When(opened_event='open', then=1),
+                    default=Value(0),
+                    output_field=IntegerField(),
+                ),
+            ),
+            dropped=Sum(
+                Case(
+                    When(dropped_event='dropped', then=1),
+                    default=Value(0),
+                    output_field=IntegerField(),
+                ),
+            ),
+            bounced=Sum(
+                Case(
+                    When(bounce_event='bounce', then=1),
+                    default=Value(0),
+                    output_field=IntegerField(),
+                ),
+            ),
+        )
+        return statistics
 
     @classmethod
     def get_statistics_range_by_dates(self, date_from, date_to,
@@ -682,3 +632,40 @@ class Email(models.Model):
             return conf.report_row_max_length
         else:
             return MAX_QUERY_LENGTH
+
+
+    @classmethod
+    def get_email(self, correo, numero_folio, tipo_dte,
+                  rut_emisor, resolucion_emisor, id_envio):
+        if isinstance(numero_folio, (str, basestring)):
+            numero_folio = int(numero_folio, base=10)
+
+        if isinstance(tipo_dte, (str, basestring)):
+            tipo_dte = int(tipo_dte, base=10)
+
+        if isinstance(resolucion_emisor, (str, basestring)):
+            resolucion_emisor = int(resolucion_emisor, base=10)
+
+        if isinstance(id_envio, (str, basestring)):
+            id_envio = int(id_envio, base=10)
+
+        try:
+            email = Email.objects.filter(
+                correo=correo,
+                numero_folio=numero_folio,
+                tipo_dte_id=tipo_dte,
+                rut_emisor=rut_emisor,
+                resolucion_emisor=resolucion_emisor,
+                id_envio=id_envio,
+            ).order_by('-input_date')[:1]
+            logger.info(email)
+            logger.info(len(email))
+            logger.info(email.query)
+
+            if len(email) > 0:
+                return email[0]
+            else:
+                return None
+        except Exception, e:
+            logger.error(e)
+            return None
