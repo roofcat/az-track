@@ -14,6 +14,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 
+from app import settings
 from autenticacion.views import LoginRequiredMixin
 from emails.models import Email
 from emails.serializers import EmailTrackRelatedSerializer
@@ -122,7 +123,9 @@ class IndexTemplateView(LoginRequiredMixin, TemplateView):
         try:
             perfil = Perfil.get_perfil(request.user)
             logger.info(perfil.usuario)
+            bucket = settings.MEDIA_URL + settings.GS_BUCKET_NAME + '/'
             data = {
+                'bucket': bucket,
                 'perfil': perfil
             }
             return render(request, self.template_name, data)

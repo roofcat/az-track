@@ -36,6 +36,9 @@ $( document ).ready( function () {
 	baseUrl = baseUrl.join('/')
 	baseUrl = baseUrl.substring( 0, baseUrl.length - 1 );
 
+	// obtener la url del bucket
+	attachUrl = $( '#bucket_name' ).val();
+
 	// obtener el perfil de usuario
     $.ajax({
         url: baseUrl + perfilUrl,

@@ -181,8 +181,8 @@ GS_BUCKET_NAME = 'folkloric-light-prueba'
 
 
 # definir la url para obtener los archivos adjuntos
-MEDIA_URL = 'storage.googleapis.com/'
-MEDIA_ROOT = 'storage.googleapis.com/'
+MEDIA_URL = 'https://storage.googleapis.com/'
+MEDIA_ROOT = 'https://storage.googleapis.com/'
 
 
 # Configuración de archivos de logs
