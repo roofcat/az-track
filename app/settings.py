@@ -51,8 +51,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # app de terceros
-    'djcelery',
-    'kombu.transport.django',
     'rest_framework',
     'rest_framework.authtoken',
     'storages',
