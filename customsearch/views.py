@@ -112,7 +112,7 @@ class EmailDetailView(APIView):
                     return Response(response.data)
                 else:
                     return Response(status=status.HTTP_404_NOT_FOUND)
-        except Exception, e:
+        except Exception as e:
             logger.error(e)
 
 
@@ -129,5 +129,6 @@ class IndexTemplateView(LoginRequiredMixin, TemplateView):
                 'perfil': perfil
             }
             return render(request, self.template_name, data)
-        except:
+        except Exception as e:
+            logger.error(e)
             return HttpResponse("No autorizado")

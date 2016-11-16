@@ -43,7 +43,7 @@ class StatisticsView(LoginRequiredMixin, TemplateView):
             }
             data = json.dumps(data)
             return HttpResponse(data, content_type='application/json')
-        except Exception, e:
+        except Exception as e:
             logger.error(e)
 
 
@@ -53,10 +53,12 @@ class IndexView(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         try:
             perfil = Perfil.get_perfil(request.user)
+            perfil.empresas = perfil.empresas.all().order_by('empresa')
             logger.info(perfil.usuario)
             data = {
                 'perfil': perfil
             }
             return render(request, self.template_name, data)
-        except:
+        except Exception as e:
+            logger.error(e)
             return HttpResponse("No autorizado")

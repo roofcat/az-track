@@ -28,6 +28,9 @@ class Empresa(models.Model):
     rut = models.CharField(primary_key=True, unique=True, max_length=20)
     empresa = models.CharField(max_length=200)
 
+    class Meta:
+        ordering = ['empresa']
+
     def __unicode__(self):
         return u'{0} - {1}'.format(self.rut, self.empresa)
 

@@ -9,7 +9,7 @@ from .models import Perfil
 
 class PerfilAdmin(admin.ModelAdmin):
     list_display = ('usuario', 'enable_report',)
-    list_filter = ('empresas', 'usuario',)
+    list_filter = ('empresas__holding', 'empresas', 'usuario',)
     ordering = ('usuario',)
 
 
