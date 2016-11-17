@@ -21,6 +21,7 @@ from .serializers import EmailDteInputSerializer, EmailTrackDTESerializer
 from .tasks import input_queue
 from configuraciones.models import EliminacionHistorico
 from empresas.models import Empresa
+from utils.generics import to_unix_timestamp
 
 
 logger = logging.getLogger(__name__)
@@ -71,7 +72,12 @@ class EmailDteInputView(APIView):
         """ Método que permite el input de un correo para ser
             gestionado por el Track.
         """
-        email = EmailDteInputSerializer(data=request.data)
+        # guardar el request data
+        data = request.data
+        # validar que el formato fecha sea de largo 10
+        data['fecha_emision'] = to_unix_timestamp(data['fecha_emision'])
+        data['fecha_recepcion'] = to_unix_timestamp(data['fecha_emision'])
+        email = EmailDteInputSerializer(data=data)
 
         if email.is_valid():
             email.save()
