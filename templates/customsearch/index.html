@@ -84,7 +84,7 @@
                         <div class="form-horizontal">
                             <div class="form-group form-group-material-green has-feedback">
                                 <label class="control-label">Nº de folio</label>
-                                <input class="form-control" type="number" id="numeroFolio">
+                                <input class="form-control" type="number" id="numeroFolio" maxlength="20">
                             </div>
                         </div>
                     </div>
@@ -104,7 +104,7 @@
                         <div class="form-horizontal">
                             <div class="form-group form-group-material-green has-feedback">
                                 <label class="control-label">Correo</label>
-                                <input class="form-control" type="email" id="correoDestinatario">
+                                <input class="form-control" type="email" id="correoDestinatario" maxlength="250">
                             </div>
                         </div>
                     </div>
@@ -112,7 +112,7 @@
                         <div class="form-horizontal">
                             <div class="form-group form-group-material-green has-feedback">
                                 <label class="control-label">Rut receptor</label>
-                                <input class="form-control" type="text" id="rutReceptor">
+                                <input class="form-control" type="text" id="rutReceptor" maxlength="20">
                             </div>
                         </div>
                     </div>
@@ -120,7 +120,7 @@
             			<div class="form-horizontal">
 		                	<div class="form-group form-group-material-green has-feedback">
 								<label class="control-label">Monto desde</label>
-								<input class="form-control" type="number" id="mount_from" min="0">
+								<input class="form-control" type="number" id="mount_from" maxlength="20">
 							</div>
 		                </div>
             		</div>
@@ -128,7 +128,7 @@
             			<div class="form-horizontal">
 							<div class="form-group form-group-material-green has-feedback">
 								<label class="control-label">Monto hasta</label>
-								<input class="form-control" type="number" id="mount_to" min="0">
+								<input class="form-control" type="number" id="mount_to" maxlength="20">
 							</div>
 		                </div>
             		</div>
@@ -136,7 +136,7 @@
                         <div class="form-horizontal">
                             <div class="form-group form-group-material-green has-feedback">
                                 <label class="control-label" id="labelOpcional1">Opcional1</label>
-                                <input class="form-control" type="text" id="opcional1" min="0">
+                                <input class="form-control" type="text" id="opcional1" maxlength="255">
                             </div>
                         </div>
                     </div>
@@ -144,7 +144,7 @@
                         <div class="form-horizontal">
                             <div class="form-group form-group-material-green has-feedback">
                                 <label class="control-label" id="labelOpcional2">Opcional2</label>
-                                <input class="form-control" type="text" id="opcional2" min="0">
+                                <input class="form-control" type="text" id="opcional2" maxlength="255">
                             </div>
                         </div>
                     </div>
@@ -152,7 +152,7 @@
                         <div class="form-horizontal">
                             <div class="form-group form-group-material-green has-feedback">
                                 <label class="control-label" id="labelOpcional3">Opcional3</label>
-                                <input class="form-control" type="text" id="opcional3" min="0">
+                                <input class="form-control" type="text" id="opcional3" maxlength="255">
                             </div>
                         </div>
                     </div>
@@ -260,5 +260,5 @@
 	<script src="{% static "js/bootstrap-material-datetimepicker.js" %}"></script>
 	<script src="{% static "js/jquery.dataTables.min.js" %}"></script>
 	<script src="{% static "js/dataTables.bootstrap.min.js" %}"></script>
-	<script src="{% static "js/customsearch/index.min.js" %}"></script>
+	<script src="{% static "js/customsearch/index.js" %}"></script>
 {% endblock %}

@@ -50,9 +50,7 @@ $( document ).ready( function () {
             inicializar();
         },
     });
-	
-	
-	
+
 });
 
 function inicializar () {
@@ -335,6 +333,121 @@ function formValidate () {
 	return true;
 
 };
+
+$( 'input' ).on( 'keyup keydown', function () {
+
+	var formValid = true;
+
+	var input = $( this );
+	var inputId = input.attr( 'id' );
+	var inputMax = input.attr( 'maxlength' );
+	var inputVal = input.val();
+
+	console.log( inputId );
+	console.log( inputMax );
+	console.log( inputVal );
+	console.log( inputVal.length );
+
+	if ( inputVal.length <= inputMax ) {
+		formValid = true;
+		console.log( "maxlength dentro del rango" );
+		input.parent().removeClass( 'has-warning' );
+		input.parent().addClass( 'has-success' );
+	} else {
+		formValid = false;
+		console.log( "maxlength fuera del rango" );
+		input.parent().removeClass( 'has-success' );
+		input.parent().addClass( 'has-warning' );
+	};
+
+	switch ( inputId ) {
+
+		case 'numeroFolio':
+			break;
+		
+		case 'correoDestinatario':
+			console.log( expr.test( inputVal ) );
+			if ( expr.test( inputVal ) ) {
+				formValid = true;
+				console.log( "correo valido." );
+				input.parent().removeClass( 'has-warning' );
+				input.parent().addClass( 'has-success' );
+			} else {
+				if ( inputVal.length > 0 ) {
+					formValid = false;
+					console.log( "correo no valido." );
+					input.parent().removeClass( 'has-success' );
+					input.parent().addClass( 'has-warning' );
+				};
+			};
+			break;
+		
+		case 'rutReceptor':
+			var rexp = new RegExp(/^([0-9])+\-([kK0-9])+$/);
+
+			if ( inputVal.length > 0 ) {
+
+				if ( inputVal.match( rexp ) ) {
+
+					var RUT	= inputVal.split( "-" );
+					var elRut = RUT[0].split( '' );
+					var factor = 2;
+					var suma = 0;
+					var dv;
+
+					for ( var i = ( elRut.length - 1 ); i >= 0; i-- ) {
+						factor = factor > 7 ? 2 : factor;
+						suma += parseInt( elRut[i], 10 ) * parseInt( factor++, 10 );
+					};
+
+					dv = 11 - ( suma % 11 );
+					if ( dv == 11 ) {
+						dv = 0;
+					} else if ( dv == 10 ) {
+						dv = "k";
+					};
+
+					if ( dv == RUT[1].toLowerCase() ) {
+						formValid = true;
+						console.log( "rut valido." );
+						input.parent().removeClass( 'has-warning' );
+						input.parent().addClass( 'has-success' );
+					} else {
+						formValid = false;
+						console.log( "rut no valido." );
+						input.parent().removeClass( 'has-success' );
+						input.parent().addClass( 'has-warning' );
+					};
+				} else {
+					formValid = false;
+						console.log( "rut no valido." );
+						input.parent().removeClass( 'has-success' );
+						input.parent().addClass( 'has-warning' );
+				};
+				
+			};
+			break;
+		
+		case 'mount_from':
+			break;
+		
+		case 'mount_to':
+			break;
+		
+		case 'opcional1':
+			break;
+		
+		case 'opcional2':
+			break;
+		
+		case 'opcional3':
+			break;
+
+	};
+
+	$( '#run_search' ).attr( 'disabled', !formValid );
+
+});
 
 function clearForm () {
 
