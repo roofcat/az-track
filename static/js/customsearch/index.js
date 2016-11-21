@@ -428,18 +428,15 @@ function validationForm ( element, event ) {
 
 					if ( dv == RUT[1].toLowerCase() ) {
 						formValid = true;
-						console.log( "rut valido." );
 						input.parent().parent().removeClass( has_error );
 						input.parent().parent().addClass( has_success );
 					} else {
 						formValid = false;
-						console.log( "rut no valido." );
 						input.parent().parent().removeClass( has_success );
 						input.parent().parent().addClass( has_error );
 					};
 				} else {
 					formValid = false;
-					console.log( "rut no valido." );
 					input.parent().parent().removeClass( has_success );
 					input.parent().parent().addClass( has_error );
 				};
@@ -452,7 +449,6 @@ function validationForm ( element, event ) {
 				event.preventDefault();
      		};
      		if ( inputVal.length > 0) {
-				console.log( $.isNumeric( parseInt( inputVal ) ) );
 				if ( $.isNumeric( parseInt( inputVal ) ) ) {
 					formValid = true;
 					input.parent().parent().removeClass( has_error );
@@ -474,7 +470,6 @@ function validationForm ( element, event ) {
 				event.preventDefault();
      		};
      		if ( inputVal.length > 0) {
-				console.log( $.isNumeric( parseInt( inputVal ) ) );
 				if ( $.isNumeric( parseInt( inputVal ) ) ) {
 					formValid = true;
 					input.parent().parent().removeClass( has_error );
