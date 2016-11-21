@@ -342,17 +342,19 @@ $( 'input' ).on( 'keyup keydown', function () {
 	var inputId = input.attr( 'id' );
 	var inputMax = input.attr( 'maxlength' );
 	var inputVal = input.val();
+	var has_success = 'has-success';
+	var has_error = 'has-error';
 
 	if ( inputVal.length <= inputMax ) {
 		formValid = true;
 		console.log( "maxlength dentro del rango" );
-		input.parent().removeClass( 'has-warning' );
-		input.parent().addClass( 'has-success' );
+		input.parent().parent().removeClass( has_error );
+		input.parent().parent().addClass( has_success );
 	} else {
 		formValid = false;
 		console.log( "maxlength fuera del rango" );
-		input.parent().removeClass( 'has-success' );
-		input.parent().addClass( 'has-warning' );
+		input.parent().parent().removeClass( has_success );
+		input.parent().parent().addClass( has_error );
 	};
 
 	switch ( inputId ) {
@@ -364,14 +366,14 @@ $( 'input' ).on( 'keyup keydown', function () {
 			if ( expr.test( inputVal ) ) {
 				formValid = true;
 				console.log( "correo valido." );
-				input.parent().removeClass( 'has-warning' );
-				input.parent().addClass( 'has-success' );
+				input.parent().parent().removeClass( has_error );
+				input.parent().parent().addClass( has_success );
 			} else {
 				if ( inputVal.length > 0 ) {
 					formValid = false;
 					console.log( "correo no valido." );
-					input.parent().removeClass( 'has-success' );
-					input.parent().addClass( 'has-warning' );
+					input.parent().parent().removeClass( has_success );
+					input.parent().parent().addClass( has_error );
 				};
 			};
 			break;
@@ -404,19 +406,19 @@ $( 'input' ).on( 'keyup keydown', function () {
 					if ( dv == RUT[1].toLowerCase() ) {
 						formValid = true;
 						console.log( "rut valido." );
-						input.parent().removeClass( 'has-warning' );
-						input.parent().addClass( 'has-success' );
+						input.parent().parent().removeClass( has_error );
+						input.parent().parent().addClass( has_success );
 					} else {
 						formValid = false;
 						console.log( "rut no valido." );
-						input.parent().removeClass( 'has-success' );
-						input.parent().addClass( 'has-warning' );
+						input.parent().parent().removeClass( has_success );
+						input.parent().parent().addClass( has_error );
 					};
 				} else {
 					formValid = false;
 						console.log( "rut no valido." );
-						input.parent().removeClass( 'has-success' );
-						input.parent().addClass( 'has-warning' );
+						input.parent().parent().removeClass( has_success );
+						input.parent().parent().addClass( has_error );
 				};
 
 			};
