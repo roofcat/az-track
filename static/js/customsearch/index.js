@@ -343,11 +343,6 @@ $( 'input' ).on( 'keyup keydown', function () {
 	var inputMax = input.attr( 'maxlength' );
 	var inputVal = input.val();
 
-	console.log( inputId );
-	console.log( inputMax );
-	console.log( inputVal );
-	console.log( inputVal.length );
-
 	if ( inputVal.length <= inputMax ) {
 		formValid = true;
 		console.log( "maxlength dentro del rango" );
@@ -366,7 +361,6 @@ $( 'input' ).on( 'keyup keydown', function () {
 			break;
 		
 		case 'correoDestinatario':
-			console.log( expr.test( inputVal ) );
 			if ( expr.test( inputVal ) ) {
 				formValid = true;
 				console.log( "correo valido." );
@@ -424,7 +418,7 @@ $( 'input' ).on( 'keyup keydown', function () {
 						input.parent().removeClass( 'has-success' );
 						input.parent().addClass( 'has-warning' );
 				};
-				
+
 			};
 			break;
 		
