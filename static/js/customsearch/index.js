@@ -27,6 +27,8 @@ var exportLink = '';
 
 // expresión regular de correo
 var expr = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
+var rutExp = new RegExp(/^([0-9])+\-([kK0-9])+$/);
+
 
 $( document ).ready( function () {
 
@@ -71,9 +73,10 @@ function inicializar () {
 $( '#run_search' ).on( 'click', function () {
 
 	// validar campos en formulario
-	if ( !formValidate() ) {
+	var validation = runValidations();
+	if ( validation[0] === false ) {
+		notificationModal( "Error en validación", validation[1].join( ' ' ) );
 		$( '#errorModal' ).modal( 'show', true );
-		console.log("aqui llego");
 		return;
 	};
 
@@ -95,11 +98,7 @@ $( '#run_search' ).on( 'click', function () {
 	var opcional3 = $( '#opcional3' ).val();
 
 
-	if ( rutReceptor ) {
-		if ( !validaRut( rutReceptor ) ) {
-			$( '#closeLoadingModal' ).click();
-		};
-	} else {
+	if ( rutReceptor.length === 0 ) {
 		rutReceptor = '-';
 	};
 
@@ -306,7 +305,9 @@ function sendUrlToReportQueue ( link, btn ) {
 
 };
 
-function formValidate () {
+function runValidations () {
+
+	var messageError = new Array();
 
 	var date_from = $( '#date_from' ).val();
 	var date_to = $( '#date_to' ).val();
@@ -318,41 +319,63 @@ function formValidate () {
 	var rutReceptor = $( '#rutReceptor' ).val();
 	var checkFallidos = $( '#checkFallidos' ).is( ':checked' );
 
-	if ( date_from && date_to ) {
-		return true;
-	} else {
-		return false;
+	if ( !date_from && !date_to ) {
+		messageError.push( "No deben ir campos de fecha vacíos, " );
 	};
 
-	if ( correoDestinatario && expr.test( correoDestinatario ) ) {
-		return true;
-	} else {
-		return false;
+	if ( correoDestinatario.length > 0 ) {
+		if ( !expr.test( correoDestinatario ) ) {
+			messageError.push( "Formato de correo inválido, " );
+		};
 	};
 
-	return true;
+	if ( rutReceptor.length > 0 ) {
+		if ( !validaRut( rutReceptor ) ) {
+			messageError.push( "Rut erróneo, " );
+		};
+	};
+
+	if ( mount_from.length > 0 ) {
+		if ( !$.isNumeric( mount_from ) ) {
+			messageError.push( "Monto desde no es numérico, " );
+		};
+	};
+
+	if ( mount_to.length > 0 ) {
+		if ( !$.isNumeric( mount_to ) ) {
+			messageError.push( "Monto hasta no es numérico, " );
+		};
+	};
+
+	if ( messageError.length > 0 ) {
+		return [ false, messageError ];
+	} else {
+		return [ true, [] ];
+	};
 
 };
 
-$( 'input' ).on( 'keyup keydown', function () {
+$( 'input' ).on( 'keyup keydown', function ( event ) {
 
+	validationForm( $( this ), event );
+
+});
+
+function validationForm ( element, event ) {
 	var formValid = true;
-
-	var input = $( this );
+	var input = element;
 	var inputId = input.attr( 'id' );
 	var inputMax = input.attr( 'maxlength' );
 	var inputVal = input.val();
 	var has_success = 'has-success';
 	var has_error = 'has-error';
-
+	
 	if ( inputVal.length <= inputMax ) {
 		formValid = true;
-		console.log( "maxlength dentro del rango" );
 		input.parent().parent().removeClass( has_error );
 		input.parent().parent().addClass( has_success );
 	} else {
 		formValid = false;
-		console.log( "maxlength fuera del rango" );
 		input.parent().parent().removeClass( has_success );
 		input.parent().parent().addClass( has_error );
 	};
@@ -360,18 +383,19 @@ $( 'input' ).on( 'keyup keydown', function () {
 	switch ( inputId ) {
 
 		case 'numeroFolio':
+     		if (event.which != 8 && event.which != 0 && (event.which < 48 || event.which > 57)) {
+				event.preventDefault();
+     		};
 			break;
 		
 		case 'correoDestinatario':
 			if ( expr.test( inputVal ) ) {
 				formValid = true;
-				console.log( "correo valido." );
 				input.parent().parent().removeClass( has_error );
 				input.parent().parent().addClass( has_success );
 			} else {
 				if ( inputVal.length > 0 ) {
 					formValid = false;
-					console.log( "correo no valido." );
 					input.parent().parent().removeClass( has_success );
 					input.parent().parent().addClass( has_error );
 				};
@@ -379,21 +403,20 @@ $( 'input' ).on( 'keyup keydown', function () {
 			break;
 		
 		case 'rutReceptor':
-			var rexp = new RegExp(/^([0-9])+\-([kK0-9])+$/);
 
 			if ( inputVal.length > 0 ) {
 
-				if ( inputVal.match( rexp ) ) {
+				if ( inputVal.match( rutExp ) ) {
 
 					var RUT	= inputVal.split( "-" );
-					var elRut = RUT[0].split( '' );
+					var elRut = RUT[ 0 ].split( '' );
 					var factor = 2;
 					var suma = 0;
 					var dv;
 
 					for ( var i = ( elRut.length - 1 ); i >= 0; i-- ) {
 						factor = factor > 7 ? 2 : factor;
-						suma += parseInt( elRut[i], 10 ) * parseInt( factor++, 10 );
+						suma += parseInt( elRut[ i ], 10 ) * parseInt( factor++, 10 );
 					};
 
 					dv = 11 - ( suma % 11 );
@@ -416,18 +439,56 @@ $( 'input' ).on( 'keyup keydown', function () {
 					};
 				} else {
 					formValid = false;
-						console.log( "rut no valido." );
-						input.parent().parent().removeClass( has_success );
-						input.parent().parent().addClass( has_error );
+					console.log( "rut no valido." );
+					input.parent().parent().removeClass( has_success );
+					input.parent().parent().addClass( has_error );
 				};
 
 			};
 			break;
 		
 		case 'mount_from':
+     		if (event.which != 8 && event.which != 0 && event.which != 189 && (event.which < 48 || event.which > 57)) {
+				event.preventDefault();
+     		};
+     		if ( inputVal.length > 0) {
+				console.log( $.isNumeric( parseInt( inputVal ) ) );
+				if ( $.isNumeric( parseInt( inputVal ) ) ) {
+					formValid = true;
+					input.parent().parent().removeClass( has_error );
+					input.parent().parent().addClass( has_success );
+				} else {
+	     			formValid = false;
+					input.parent().parent().removeClass( has_success );
+					input.parent().parent().addClass( has_error );
+				};
+			} else {
+     			formValid = true;
+				input.parent().parent().removeClass( has_error );
+				input.parent().parent().addClass( has_success );
+			};
 			break;
 		
 		case 'mount_to':
+			if (event.which != 8 && event.which != 0 && event.which != 189 && (event.which < 48 || event.which > 57)) {
+				event.preventDefault();
+     		};
+     		if ( inputVal.length > 0) {
+				console.log( $.isNumeric( parseInt( inputVal ) ) );
+				if ( $.isNumeric( parseInt( inputVal ) ) ) {
+					formValid = true;
+					input.parent().parent().removeClass( has_error );
+					input.parent().parent().addClass( has_success );
+				} else {
+	     			formValid = false;
+					input.parent().parent().removeClass( has_success );
+					input.parent().parent().addClass( has_error );
+				};
+			} else {
+     			formValid = true;
+				input.parent().parent().removeClass( has_error );
+				input.parent().parent().addClass( has_success );
+			};
 			break;
 		
 		case 'opcional1':
@@ -443,7 +504,8 @@ $( 'input' ).on( 'keyup keydown', function () {
 
 	$( '#run_search' ).attr( 'disabled', !formValid );
 
-});
+	return formValid;
+};
 
 function clearForm () {
 
@@ -515,9 +577,7 @@ function setDefaultDates () {
 
 function validaRut ( rut ) {
 
-	var rexp = new RegExp(/^([0-9])+\-([kK0-9])+$/);
-
-	if ( rut.match( rexp ) ) {
+	if ( rut.match( rutExp ) ) {
 
 		var RUT	= rut.split( "-" );
 		var elRut = RUT[0].split( '' );
@@ -541,11 +601,9 @@ function validaRut ( rut ) {
 			console.log( "El rut es valido." );
 			return true;
 		} else {
-		alert( "El rut es incorrecto." );
 			return false;
 		};
 	} else {
-		alert( "Formato rut incorrecto. El formato es 12345678-9" );
 		return false;
 	};
 

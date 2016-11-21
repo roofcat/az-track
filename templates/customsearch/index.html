@@ -84,7 +84,7 @@
                         <div class="form-horizontal">
                             <div class="form-group form-group-material-green has-feedback">
                                 <label class="control-label">Nº de folio</label>
-                                <input class="form-control" type="number" data-hint="Máximo 20 digitos." id="numeroFolio" maxlength="20">
+                                <input class="form-control" type="text" data-hint="Número mayor a 0, máximo 20 digitos." id="numeroFolio" maxlength="20">
                             </div>
                         </div>
                     </div>
@@ -112,7 +112,7 @@
                         <div class="form-horizontal">
                             <div class="form-group form-group-material-green has-feedback">
                                 <label class="control-label">Rut receptor</label>
-                                <input class="form-control" type="text" id="rutReceptor" data-hint="Rut sin puntos y con guión." maxlength="20">
+                                <input class="form-control" type="text" id="rutReceptor" data-hint="Rut sin puntos, con guión y K mayúscula." maxlength="20">
                             </div>
                         </div>
                     </div>
@@ -120,7 +120,7 @@
             			<div class="form-horizontal">
 		                	<div class="form-group form-group-material-green has-feedback">
 								<label class="control-label">Monto desde</label>
-								<input class="form-control" type="number" id="mount_from" data-hint="Máximo 20 digitos" maxlength="20">
+								<input class="form-control" type="text" id="mount_from" data-hint="Máximo 20 digitos." maxlength="20">
 							</div>
 		                </div>
             		</div>
@@ -128,7 +128,7 @@
             			<div class="form-horizontal">
 							<div class="form-group form-group-material-green has-feedback">
 								<label class="control-label">Monto hasta</label>
-								<input class="form-control" type="number" id="mount_to" data-hint="Máximo 20 digitos" maxlength="20">
+								<input class="form-control" type="text" id="mount_to" data-hint="Máximo 20 digitos." maxlength="20">
 							</div>
 		                </div>
             		</div>
@@ -215,26 +215,6 @@
     </div>
 </div>
 
-<!-- MODAL ERROR -->
-<div class="modal" id="errorModal" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" id="closeErrorModal" data-dismiss="modal" aria-hidden="true"></button>
-                <h4 class="modal-title">Advertencia!</h4>
-            </div>
-            <div class="modal-body">
-                <p>No deben ir campos vacíos.</p>
-            </div>
-            <div class="modal-footer">
-            	<div class="form-group" align="right" style="margin-right:20px;">
-					<button class="btn btn-flat btn-material-green" data-dismiss="modal">Cerrar</button>
-				</div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- MODAL NOTIFICACIONES -->
 <div class="modal" id="notificationModal" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
@@ -260,5 +240,5 @@
 	<script src="{% static "js/bootstrap-material-datetimepicker.js" %}"></script>
 	<script src="{% static "js/jquery.dataTables.min.js" %}"></script>
 	<script src="{% static "js/dataTables.bootstrap.min.js" %}"></script>
-	<script src="{% static "js/customsearch/index.min.js" %}"></script>
+	<script src="{% static "js/customsearch/index.js" %}"></script>
 {% endblock %}
