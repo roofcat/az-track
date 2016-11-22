@@ -8,6 +8,7 @@ import json
 import logging
 
 
+from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django.db.models import Count, Q, Case, When, Sum, IntegerField, Value
@@ -16,7 +17,6 @@ from django.db.models import Count, Q, Case, When, Sum, IntegerField, Value
 from boto.gs.connection import GSConnection
 
 
-from app import settings
 from configuraciones.models import GeneralConfiguration
 from empresas.models import Empresa
 from tipodocumentos.models import TipoDocumento
