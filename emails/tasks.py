@@ -38,7 +38,7 @@ def cron_clean_emails_history():
     # Recorrer listado
     for config in active_configs:
         if config.activo:
-            logger.info('Procesando Holding: ' + config.holding)
+            logger.info('Procesando Holding: %s' % config.holding.nombre)
             if config.dias_a_eliminar is not None:
                 try:
                     # resta la fecha de hoy con los días a eliminar
@@ -48,9 +48,9 @@ def cron_clean_emails_history():
                     # listar las empresas al holding que pertenece la conf actual
                     empresas = Empresa.objects.filter(holding=config.holding)
                     for empresa in empresas:
-                        logger.info('Borrando datos de empresa: ' + empresa)
+                        logger.info('Procesando Empresa: %s' % empresa.empresa)
                         # enviar la petición para borrar
                         Email.delete_old_emails_by_date(date_to_delete, empresa)
                 except Exception as e:
                     logger.error(e)
-    logger.info('Proceso de eliminación de correos historicos finalizada')
+    logger.info('Finalizando tarea de eliminar correos historicos')

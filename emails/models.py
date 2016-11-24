@@ -393,10 +393,15 @@ class Email(models.Model):
     @classmethod
     def delete_old_emails_by_date(self, date_to_delete, empresa):
         try:
-            Email.objects.filter(
+            emails = Email.objects.filter(
                 input_date__lt=date_to_delete,
                 empresa=empresa,
-            ).delete()
+            )
+            if emails.count() > 0:
+                logger.info('Cantidad de correos a eliminar: %d' % emails.count())
+                emails.delete()
+            else:
+                logger.info('No hay correos para eliminar')
         except Exception, e:
             logger.error(e)
 
