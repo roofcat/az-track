@@ -28,4 +28,5 @@ app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
 app.conf.update(
     broker_url='amqp://guest:guest@localhost//',
+    beat_scheduler='django_celery_beat.schedulers.DatabaseScheduler',
 )
