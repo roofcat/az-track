@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # app de terceros
+    'django_celery_beat',
     'rest_framework',
     'rest_framework.authtoken',
     'storages',

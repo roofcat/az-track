@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 
 
+from datetime import date, timedelta
 import logging
 
 
+from .models import Email
 from app import celery_app
+from configuraciones.models import EliminacionHistorico
+from empresas.models import Empresa
 from utils.sendgrid_client import EmailClient
 
 
@@ -19,3 +23,30 @@ def input_queue(email):
         email_client.enviar_correo_dte(email)
     except Exception, e:
         logger.error(e)
+
+
+@celery_app.task
+def cron_clean_emails_history():
+    """ Método que si tiene habilitada la opción de eliminar correos antiguos
+        antiguos (parametrizado en app configuraciones) lista los correos
+        desde el numero de meses máximo a retener en la DB.
+    """
+    # Listar todas las configuraciones activas
+    active_configs = EliminacionHistorico.objects.filter(activo=True)
+
+    # Recorrer listado
+    for config in active_configs:
+        if config.activo:
+            if config.dias_a_eliminar is not None:
+                try:
+                    # resta la fecha de hoy con los días a eliminar
+                    today = date.today()
+                    days = timedelta(days=config.dias_a_eliminar)
+                    date_to_delete = today - days
+                    # listar las empresas al holding que pertenece la conf actual
+                    empresas = Empresa.objects.filter(holding=config.holding)
+                    for empresa in empresas:
+                        # enviar la petición para borrar
+                        Email.delete_old_emails_by_date(date_to_delete, empresa)
+                except Exception as e:
+                    logger.error(e)

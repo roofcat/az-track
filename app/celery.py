@@ -27,8 +27,5 @@ app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
 app.conf.update(
-    BROKER_URL='amqp://guest:guest@localhost//',
-    CELERY_ACEPT_CONTENT=['json'],
-    CELERY_TASK_SERIALIZER='json',
-    CELERY_RESULT_SERIALIZER='json',
+    broker_url='amqp://guest:guest@localhost//',
 )

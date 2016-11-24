@@ -12,9 +12,6 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 from autenticacion.views import log_in, log_out
 from autenticacion.views import home_to_dashboard, ProfileTemplateView
-from emails.views import CronCleanEmailsHistoryView
-from emails.views import CronSendDelayedEmailView
-from emails.views import CronSendDelayedProcessedEmailView
 from emails.views import EmailDteInputView
 from webhooks.views import SendGridRestWebhookView, SendGridApiWebhookView
 
@@ -28,12 +25,6 @@ urlpatterns = [
     # rutas api rest heredadas de APIView
     # en esta ruta entran las peticiones de correo desde un DTE
     url(r'^api/email/', EmailDteInputView.as_view()),
-
-    # tarea cron que envia correos con pendiente
-    url(r'^emails/cron/send-delayed/', CronSendDelayedEmailView.as_view()),
-    url(r'^emails/cron/send-delayed-processed/',
-        CronSendDelayedProcessedEmailView.as_view()),
-    url(r'^emails/cron/clean-history/', CronCleanEmailsHistoryView.as_view()),
 
     # rutas modulo empresas
     url(r'^empresas/', include('empresas.urls', namespace='empresas')),

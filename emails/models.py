@@ -525,32 +525,6 @@ class Email(models.Model):
             return None
 
     @classmethod
-    def get_delayed_emails(self):
-        emails = Email.objects.filter(
-            Q(processed_event__isnull=True) & Q(dropped_event__isnull=True)
-        ).order_by('id')
-        if emails:
-            logger.info("se encontraron la siguente cantidad de emails pendientes")
-            logger.info(emails.count())
-            return emails
-        else:
-            return None
-
-    @classmethod
-    def get_delayed_emails_only_processed(self):
-        emails = Email.objects.filter(
-            Q(processed_event__isnull=False) & Q(delivered_event__isnull=True) &
-            Q(opened_event__isnull=True) & Q(dropped_event__isnull=True) &
-            Q(bounce_event__isnull=True)
-        ).order_by('input_date')
-        if emails:
-            logger.info("se encontraron la siguente cantidad de emails pendientes")
-            logger.info(emails.count())
-            return emails
-        else:
-            return None
-
-    @classmethod
     def get_emails_by_dates_async(self, date_from, date_to,
                                   empresa, tipo_receptor='all'):
         params = dict()

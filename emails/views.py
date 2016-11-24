@@ -1,14 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-from datetime import date, timedelta
 import logging
-
-
-from django.http import HttpResponse
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import TemplateView
 
 
 from rest_framework import authentication, permissions, status
@@ -19,8 +12,6 @@ from rest_framework.views import APIView
 from .models import Email
 from .serializers import EmailDteInputSerializer, EmailTrackDTESerializer
 from .tasks import input_queue
-from configuraciones.models import EliminacionHistorico
-from empresas.models import Empresa
 from utils.generics import to_unix_timestamp
 
 
@@ -88,77 +79,3 @@ class EmailDteInputView(APIView):
         else:
             logger.error(email.errors)
             return Response(email.errors)
-
-
-class CronCleanEmailsHistoryView(TemplateView):
-    """ Método que si tiene habilitada la opción de eliminar correos antiguos
-        antiguos (parametrizado en app configuraciones) lista los correos
-        desde el numero de meses máximo a retener en la DB.
-    """
-
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return super(CronCleanEmailsHistoryView, self).dispatch(request, *args, **kwargs)
-
-    def get(self, request, *args, **kwargs):
-        # Listar todas las configuraciones activas
-        active_configs = EliminacionHistorico.objects.filter(activo=True)
-
-        # Recorrer listado
-        for config in active_configs:
-            if config.activo:
-                if config.dias_a_eliminar is not None:
-                    try:
-                        # resta la fecha de hoy con los días a eliminar
-                        today = date.today()
-                        days = timedelta(days=config.dias_a_eliminar)
-                        date_to_delete = today - days
-                        # listar las empresas al holding que pertenece la conf actual
-                        empresas = Empresa.objects.filter(holding=config.holding)
-                        for empresa in empresas:
-                            # enviar la petición para borrar
-                            emails = Email.delete_old_emails_by_date(date_to_delete, empresa)
-                    except Exception, e:
-                        logger.error(e)
-                        return HttpResponse(e)
-        return HttpResponse()
-
-
-class CronSendDelayedEmailView(TemplateView):
-    """ Evalúa los correos que no se han podido enviar,
-        los correos que caen en este proceso son aquellos que son
-        ingresados vía json post en el servicio rest publicado
-    """
-
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return super(CronSendDelayedEmailView, self).dispatch(request, *args, **kwargs)
-
-    def get(self, request, *args, **kwargs):
-        logger.info("entrando a la cola de reenvio de correos")
-        logger.info(request.body)
-        emails = Email.get_delayed_emails()
-        if emails is not None:
-            for email in emails:
-                input_queue(email)
-        return HttpResponse()
-
-
-class CronSendDelayedProcessedEmailView(TemplateView):
-    """ Esta es la vista que reintenta envíos de correos
-        cuando se utiliza la api de tracking para enviar
-        correos de los DTEs
-    """
-
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return super(CronSendDelayedProcessedEmailView, self).dispatch(request, *args, **kwargs)
-
-    def get(self, request, *args, **kwargs):
-        logger.info("entrando a la cola de reenvio de correos")
-        logger.info(request.body)
-        emails = Email.get_delayed_emails_only_processed()
-        if emails is not None:
-            for email in emails:
-                input_queue(email)
-        return HttpResponse()

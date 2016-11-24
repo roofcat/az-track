@@ -4,7 +4,8 @@ billiard==3.5.0.2
 boto==2.43.0
 celery==4.0.0
 Django==1.10.3
-django-filter==0.15.3
+django-celery-beat==1.0.1
+django-filter==1.0.0
 django-storages==1.5.1
 djangorestframework==3.5.3
 gunicorn==19.6.0
