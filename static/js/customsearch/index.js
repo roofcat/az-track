@@ -379,13 +379,26 @@ function validationForm ( element, event ) {
 		input.parent().parent().removeClass( has_success );
 		input.parent().parent().addClass( has_error );
 	};
-
+	
 	switch ( inputId ) {
 
 		case 'numeroFolio':
-     		if (event.which != 8 && event.which != 0 && (event.which < 48 || event.which > 57)) {
+			var keyCodeArray = [ 46, 8, 9, 27, 13, 110, 190 ];
+
+			if ( $.inArray( event.keyCode, keyCodeArray ) !== -1 || 
+				( event.keyCode === 65 && ( event.ctrlKey === true || event.metaKey === true ) ||
+												( event.keyCode >= 35 && event.keyCode <= 40) ) ) {
+
+				return;
+
+			};
+
+			if ( ( event.shiftKey || ( event.keyCode < 48 || event.keyCode > 57 ) ) && 
+											(event.keyCode < 96 || event.keyCode > 105) ) {
+				
 				event.preventDefault();
-     		};
+
+			};
 			break;
 		
 		case 'correoDestinatario':
@@ -445,11 +458,25 @@ function validationForm ( element, event ) {
 			break;
 		
 		case 'mount_from':
-     		if (event.which != 8 && event.which != 0 && event.which != 189 && (event.which < 48 || event.which > 57)) {
+			var keyCodeArray = [ 46, 8, 9, 27, 13, 109, 110, 189, 190 ];
+
+			if ( $.inArray( event.keyCode, keyCodeArray ) !== -1 || 
+				( event.keyCode === 65 && ( event.ctrlKey === true || event.metaKey === true ) ||
+												( event.keyCode >= 35 && event.keyCode <= 40) ) ) {
+
+				return;
+
+			};
+
+			if ( ( event.shiftKey || ( event.keyCode < 48 || event.keyCode > 57 ) ) && 
+											(event.keyCode < 96 || event.keyCode > 105) ) {
+				
 				event.preventDefault();
-     		};
+
+			};
+			
      		if ( inputVal.length > 0) {
-				if ( $.isNumeric( parseInt( inputVal ) ) ) {
+				if ( $.isNumeric( inputVal ) ) {
 					formValid = true;
 					input.parent().parent().removeClass( has_error );
 					input.parent().parent().addClass( has_success );
@@ -466,11 +493,25 @@ function validationForm ( element, event ) {
 			break;
 		
 		case 'mount_to':
-			if (event.which != 8 && event.which != 0 && event.which != 189 && (event.which < 48 || event.which > 57)) {
+			var keyCodeArray = [ 46, 8, 9, 27, 13, 109, 110, 189, 190 ];
+
+			if ( $.inArray( event.keyCode, keyCodeArray ) !== -1 || 
+				( event.keyCode === 65 && ( event.ctrlKey === true || event.metaKey === true ) ||
+												( event.keyCode >= 35 && event.keyCode <= 40) ) ) {
+
+				return;
+
+			};
+
+			if ( ( event.shiftKey || ( event.keyCode < 48 || event.keyCode > 57 ) ) && 
+											(event.keyCode < 96 || event.keyCode > 105) ) {
+				
 				event.preventDefault();
-     		};
+
+			};
+			
      		if ( inputVal.length > 0) {
-				if ( $.isNumeric( parseInt( inputVal ) ) ) {
+				if ( $.isNumeric( inputVal ) ) {
 					formValid = true;
 					input.parent().parent().removeClass( has_error );
 					input.parent().parent().addClass( has_success );
