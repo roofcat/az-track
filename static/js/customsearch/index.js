@@ -82,7 +82,7 @@ $( '#run_search' ).on( 'click', function () {
 
 	$( '#closeMenuModal' ).click();
 	$( '#loadingModal' ).modal( 'show', true );
-	
+
 	// toma de valores de los parámetros
 	var date_from = $( '#date_from' ).val();
 	var date_to = $( '#date_to' ).val();
@@ -369,7 +369,7 @@ function validationForm ( element, event ) {
 	var inputVal = input.val();
 	var has_success = 'has-success';
 	var has_error = 'has-error';
-	
+
 	if ( inputVal.length <= inputMax ) {
 		formValid = true;
 		input.parent().parent().removeClass( has_error );
@@ -379,13 +379,13 @@ function validationForm ( element, event ) {
 		input.parent().parent().removeClass( has_success );
 		input.parent().parent().addClass( has_error );
 	};
-	
+
 	switch ( inputId ) {
 
 		case 'numeroFolio':
 			var keyCodeArray = [ 46, 8, 9, 27, 13, 110, 190 ];
 
-			if ( $.inArray( event.keyCode, keyCodeArray ) !== -1 || 
+			if ( $.inArray( event.keyCode, keyCodeArray ) !== -1 ||
 				( event.keyCode === 65 && ( event.ctrlKey === true || event.metaKey === true ) ||
 												( event.keyCode >= 35 && event.keyCode <= 40) ) ) {
 
@@ -393,14 +393,14 @@ function validationForm ( element, event ) {
 
 			};
 
-			if ( ( event.shiftKey || ( event.keyCode < 48 || event.keyCode > 57 ) ) && 
+			if ( ( event.shiftKey || ( event.keyCode < 48 || event.keyCode > 57 ) ) &&
 											(event.keyCode < 96 || event.keyCode > 105) ) {
-				
+
 				event.preventDefault();
 
 			};
 			break;
-		
+
 		case 'correoDestinatario':
 			if ( expr.test( inputVal ) ) {
 				formValid = true;
@@ -414,7 +414,7 @@ function validationForm ( element, event ) {
 				};
 			};
 			break;
-		
+
 		case 'rutReceptor':
 
 			if ( inputVal.length > 0 ) {
@@ -456,11 +456,11 @@ function validationForm ( element, event ) {
 
 			};
 			break;
-		
+
 		case 'mount_from':
 			var keyCodeArray = [ 46, 8, 9, 27, 13, 109, 110, 189, 190 ];
 
-			if ( $.inArray( event.keyCode, keyCodeArray ) !== -1 || 
+			if ( $.inArray( event.keyCode, keyCodeArray ) !== -1 ||
 				( event.keyCode === 65 && ( event.ctrlKey === true || event.metaKey === true ) ||
 												( event.keyCode >= 35 && event.keyCode <= 40) ) ) {
 
@@ -468,13 +468,13 @@ function validationForm ( element, event ) {
 
 			};
 
-			if ( ( event.shiftKey || ( event.keyCode < 48 || event.keyCode > 57 ) ) && 
+			if ( ( event.shiftKey || ( event.keyCode < 48 || event.keyCode > 57 ) ) &&
 											(event.keyCode < 96 || event.keyCode > 105) ) {
-				
+
 				event.preventDefault();
 
 			};
-			
+
      		if ( inputVal.length > 0) {
 				if ( $.isNumeric( inputVal ) ) {
 					formValid = true;
@@ -491,11 +491,11 @@ function validationForm ( element, event ) {
 				input.parent().parent().addClass( has_success );
 			};
 			break;
-		
+
 		case 'mount_to':
 			var keyCodeArray = [ 46, 8, 9, 27, 13, 109, 110, 189, 190 ];
 
-			if ( $.inArray( event.keyCode, keyCodeArray ) !== -1 || 
+			if ( $.inArray( event.keyCode, keyCodeArray ) !== -1 ||
 				( event.keyCode === 65 && ( event.ctrlKey === true || event.metaKey === true ) ||
 												( event.keyCode >= 35 && event.keyCode <= 40) ) ) {
 
@@ -503,13 +503,13 @@ function validationForm ( element, event ) {
 
 			};
 
-			if ( ( event.shiftKey || ( event.keyCode < 48 || event.keyCode > 57 ) ) && 
+			if ( ( event.shiftKey || ( event.keyCode < 48 || event.keyCode > 57 ) ) &&
 											(event.keyCode < 96 || event.keyCode > 105) ) {
-				
+
 				event.preventDefault();
 
 			};
-			
+
      		if ( inputVal.length > 0) {
 				if ( $.isNumeric( inputVal ) ) {
 					formValid = true;
@@ -526,13 +526,13 @@ function validationForm ( element, event ) {
 				input.parent().parent().addClass( has_success );
 			};
 			break;
-		
+
 		case 'opcional1':
 			break;
-		
+
 		case 'opcional2':
 			break;
-		
+
 		case 'opcional3':
 			break;
 
@@ -584,7 +584,7 @@ $( '.nav-pills' ).on('click', 'a', function () {
 });
 
 // Validar los campos de fecha
-$( '.datePicker' ).on( 'change', function () {
+$( 'input:text' ).on( 'change', function () {
 
 	var date_from = $( '#date_from' ).val();
 	var date_to = $( '#date_to' ).val();
@@ -809,22 +809,22 @@ function drawJqueryTable ( urlSource ) {
 				'data': 'rut_receptor',
 				'title': 'Rut receptor',
 			},
-			{ 
+			{
 				'data': 'nombre_cliente',
 				'title': 'Nombre cliente',
 			},
-			{ 
+			{
 				'data': 'rut_emisor',
 				'title': 'Rut emisor',
 			},
-			{ 
+			{
 				'data': 'tipo_receptor',
 				'title': 'Tipo receptor',
 				'render': function ( data, type, row, meta ) {
 					var html = "<div>";
 
 					switch ( data.toLowerCase() ) {
-						
+
 						case 'manual':
 							html += "<i style=\"font-size:16px;\" ";
 							html += "title=\"Manual (PDF).\" ";
@@ -853,14 +853,14 @@ function drawJqueryTable ( urlSource ) {
 					return html;
 				},
 			},
-			{ 
+			{
 				'data': 'tipo_dte',
 				'title': 'Tipo DTE',
 				'render': function ( data, type, row, meta ) {
 					return data.nombre_documento;
 				},
 			},
-			{ 
+			{
 				'data': 'monto',
 				'title': 'Monto',
 				'render': function ( data, type, row, meta ) {
@@ -883,7 +883,7 @@ function drawJqueryTable ( urlSource ) {
             "zeroRecords": "No se encontraron registros.",
         },
 	});
-	
+
 	table.removeClass( 'display' );
 	table.addClass( 'table table-hover table-striped table-condensed table-responsive' );
 
@@ -929,9 +929,9 @@ function drawEmailDetailModal ( data ) {
 	var body = $( '#emailDetailBody' );
 	title.empty();
 	body.empty();
-	
+
 	var htmlTitle = "Detalle de " + data.correo + " Folio Nº " + data.numero_folio;
-	
+
 	var htmlBody = "<div><br>";
 	htmlBody += "<label>Empresa</label> " + data.empresa.empresa + ' ';
 	htmlBody += "<label>Rut emisor</label> " + data.rut_emisor + ' ';
@@ -943,16 +943,16 @@ function drawEmailDetailModal ( data ) {
 	htmlBody += "<label>Fecha emisión</label> ";
 	if ( data.fecha_emision ) {
 		htmlBody += " " + timestamp_to_date( data.fecha_emision ) + " ";
-	} else { 
+	} else {
 		htmlBody += "---";
 	};
-	
+
 	htmlBody += " ";
 
 	htmlBody += "<label>Resolución emisor</label> ";
 	if ( data.resolucion_emisor ) {
 		htmlBody += " " + data.resolucion_emisor + " ";
-	} else { 
+	} else {
 		htmlBody += "---";
 	};
 
@@ -961,7 +961,7 @@ function drawEmailDetailModal ( data ) {
 	htmlBody += "<label>Fecha recepción</label> ";
 	if ( data.fecha_recepcion ) {
 		htmlBody += " " + timestamp_to_date( data.fecha_recepcion ) + " ";
-	} else { 
+	} else {
 		htmlBody += "---";
 	};
 
@@ -970,12 +970,12 @@ function drawEmailDetailModal ( data ) {
 	htmlBody += "<label>Resolución receptor</label> ";
 	if ( data.resolucion_receptor ) {
 		htmlBody += " " + data.resolucion_receptor + " ";
-	} else { 
+	} else {
 		htmlBody += "---";
 	};
-	
+
 	htmlBody += "<br>";
-	
+
 	htmlBody += "<label>Monto</label> ";
 	if ( data.monto > 0 ) {
 		htmlBody += "$" + data.monto + ".-";
@@ -1000,14 +1000,14 @@ function drawEmailDetailModal ( data ) {
 	} else {
 		htmlBody += "---";
 	};
-	
+
 	htmlBody += " ";
-	
+
 	htmlBody += "<label>Tipo receptor</label> ";
 	if ( data.tipo_receptor ) {
 
 		switch ( data.tipo_receptor.toLowerCase() ) {
-			
+
 			case 'manual':
 				htmlBody += "Manual (PDF) ";
 				break;
@@ -1091,7 +1091,7 @@ function drawEmailDetailModal ( data ) {
 		htmlBody +="Tipo rebote " + data.bounce_type + " status " + data.bounce_status + "<br>";
 		htmlBody +="Razón del rebote " + data.bounce_reason + "<br>";
 	};
-	
+
 
 	if ( data.dropped_event ) {
 		htmlBody += "<label class=\"label label-danger\">Rechazado</label> ";
