@@ -419,6 +419,7 @@ class Email(models.Model):
             logger.info("query de fallidos")
             emails = Email.objects.filter(
                 Q(input_date__range=(date_from, date_to)),
+                Q(empresa=empresa),
                 Q(bounce_event='bounce') | Q(dropped_event='dropped')
             ).order_by('-input_date')
         else:
@@ -485,6 +486,7 @@ class Email(models.Model):
             logger.info("query de fallidos")
             emails = Email.objects.filter(
                 Q(input_date__range=(date_from, date_to)),
+                Q(empresa=empresa),
                 Q(bounce_event='bounce') | Q(dropped_event='dropped')
             ).order_by('-input_date')
         else:
