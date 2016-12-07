@@ -1,9 +1,10 @@
-amqp==2.1.1
+amqp==2.1.2
 anyjson==0.3.3
 billiard==3.5.0.2
 boto==2.43.0
 celery==4.0.0
-Django==1.10.3
+Django==1.10.4
+django-celery==3.1.17
 django-celery-beat==1.0.1
 django-filter==1.0.1
 django-storages==1.5.1
@@ -18,10 +19,10 @@ protobuf==3.1.0.post1
 pyasn1==0.1.9
 pyasn1-modules==0.0.8
 python-http-client==2.2.1
-pytz==2016.7
+pytz==2016.10
 rsa==3.4.2
 sendgrid==3.6.3
 six==1.10.0
 suds-jurko==0.6
-tablib==0.11.2
+tablib==0.11.3
 vine==1.1.3

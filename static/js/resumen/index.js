@@ -65,7 +65,9 @@ function getDataAjax ( date_from, date_to, empresa ) {
 
 };
 
-$( '.datePicker' ).on( 'change', function () {
+// Validar los campos de fecha
+$( 'input:text' ).on( 'change', function () {
+
 	var date_from = $( '#date_from' ).val();
 	var date_to = $( '#date_to' ).val();
 
@@ -75,6 +77,7 @@ $( '.datePicker' ).on( 'change', function () {
 	if ( date_from > date_to ) {
 		setDefaultDates();
 	};
+
 });
 
 function setDefaultDates () {
