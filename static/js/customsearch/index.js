@@ -384,9 +384,7 @@ function validationForm ( element, event ) {
 
 		case 'numeroFolio':
 			var keyCodeArray = [ 46, 8, 9, 27, 13, 110 ];
-
-			console.log( event.keyCode );
-
+			
 			if ( $.inArray( event.keyCode, keyCodeArray ) !== -1 ||
 				( event.keyCode === 65 && ( event.ctrlKey === true || event.metaKey === true ) ||
 												( event.keyCode >= 35 && event.keyCode <= 40) ) ) {
