@@ -16,6 +16,9 @@ class Perfil(models.Model):
     empresas = models.ManyToManyField(Empresa)
     enable_report = models.BooleanField(default=True)
 
+    class Meta:
+        ordering = ['usuario']
+
     def __unicode__(self):
         return u'{0}: {1}'.format(self.usuario, self.enable_report)
 

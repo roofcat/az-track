@@ -13,11 +13,13 @@ class HoldingAdmin(admin.ModelAdmin):
 
 
 class EmpresaAdmin(admin.ModelAdmin):
-    list_filter = ('rut', 'empresa',)
-    search_fields = ('rut', 'empresa',)
+    list_display = ('holding', 'rut', 'empresa')
+    list_filter = ('holding', 'empresa',)
+    search_fields = ('holding', 'empresa',)
 
 
 class CamposOpcionalesEmailAdmin(admin.ModelAdmin):
+    list_display = ('empresa', 'opcional1', 'opcional2', 'opcional3',)
     list_filter = ('empresa',)
     search_fields = ('empresa',)
 

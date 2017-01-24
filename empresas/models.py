@@ -15,6 +15,9 @@ class Holding(models.Model):
 
     nombre = models.CharField(max_length=200, unique=True, db_index=True)
 
+    class Meta:
+        ordering = ['nombre',]
+
     def __unicode__(self):
         return u'{0}'.format(self.nombre)
 
@@ -29,7 +32,7 @@ class Empresa(models.Model):
     empresa = models.CharField(max_length=200)
 
     class Meta:
-        ordering = ['empresa']
+        ordering = ['holding', 'empresa',]
 
     def __unicode__(self):
         return u'{0} - {1}'.format(self.rut, self.empresa)
@@ -40,6 +43,9 @@ class CamposOpcionalesEmail(models.Model):
     opcional1 = models.CharField(max_length=120, db_index=True)
     opcional2 = models.CharField(max_length=120, db_index=True, null=True, blank=True)
     opcional3 = models.CharField(max_length=120, db_index=True, null=True, blank=True)
+
+    class Meta:
+        ordering = ['empresa']
 
     def __unicode__(self):
         return u'{0}: {1} - {2} - {3}'.format(

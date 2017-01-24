@@ -28,6 +28,9 @@ class GeneralConfiguration(models.Model):
     events_register = models.BooleanField(default=False)
     events_to_register = models.CharField(max_length=255, default='processed')
 
+    class Meta:
+        ordering = ['holding']
+
     @classmethod
     def get_configuration(self, empresa_id):
         try:
@@ -47,6 +50,9 @@ class SendgridConf(models.Model):
     asunto_email_reporte = models.EmailField(max_length=240, db_index=True)
     nombre_email_reporte = models.CharField(max_length=240, db_index=True)
 
+    class Meta:
+        ordering = ['holding', 'api_user']
+
     def __unicode__(self):
         return u'{0} - {1}'.format(self.holding, self.api_user)
 
@@ -65,6 +71,9 @@ class TemplateReporte(models.Model):
     asunto_reporte = models.CharField(max_length=240, db_index=True)
     template_html = models.TextField()
 
+    class Meta:
+        ordering = ['holding']
+
     def __unicode__(self):
         return u'{0} - {1}'.format(self.holding, self.reporte_url)
 
@@ -81,6 +90,9 @@ class EliminacionHistorico(models.Model):
     holding = models.ForeignKey(Holding)
     activo = models.BooleanField(default=False)
     dias_a_eliminar = models.IntegerField(null=True, blank=True)
+
+    class Meta:
+        ordering = ['holding']
 
     # indicará que sera configuración a nivel de holding
 
@@ -139,6 +151,9 @@ class SoapWebService(models.Model):
     metodo_rechazado = models.CharField(max_length=200, null=True, blank=True)
     parametros_rechazado = models.CharField(max_length=200, null=True, blank=True)
     campos_rechazado = models.CharField(max_length=255, null=True, blank=True)
+
+    class Meta:
+        ordering = ['holding']
 
     def __unicode__(self):
         return u'{0} - {1}'.format(self.holding, self.url)
