@@ -130,7 +130,7 @@ class Email(models.Model):
                                     blank=True,
                                     db_index=True)
     opened_ip = models.CharField(max_length=100, null=True, blank=True)
-    opened_user_agent = models.CharField(max_length=240,
+    opened_user_agent = models.CharField(max_length=255,
                                          null=True,
                                          blank=True)
     opened_sg_event_id = models.CharField(max_length=240,
@@ -184,7 +184,7 @@ class Email(models.Model):
     # campos click
     click_ip = models.CharField(max_length=100, null=True, blank=True)
     click_purchase = models.CharField(max_length=240, null=True, blank=True)
-    click_useragent = models.CharField(max_length=240, null=True, blank=True)
+    click_useragent = models.CharField(max_length=255, null=True, blank=True)
     click_event = models.CharField(max_length=240,
                                    null=True,
                                    blank=True,
