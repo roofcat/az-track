@@ -23,7 +23,7 @@ pyparsing==2.2.0
 python-http-client==2.2.1
 pytz==2017.2
 rsa==3.4.2
-sendgrid==3.6.5
+sendgrid==3.6.3
 six==1.10.0
 suds-jurko==0.6
 tablib==0.11.4

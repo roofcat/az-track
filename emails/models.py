@@ -653,3 +653,16 @@ class Email(models.Model):
         except Exception, e:
             logger.error(e)
             return None
+
+    @classmethod
+    def get_emails_no_delivered(self):
+        emails = Email.objects.filter(
+            Q(processed_event__isnull=True) & Q(dropped_event__isnull=True)
+        ).order_by('id')
+        if emails:
+            logger.info("se encontraron la siguente cantidad de emails pendientes")
+            logger.info(emails.count())
+            return emails
+        else:
+            logger.info("No se encontraron emails pendientes de envío")
+            return None

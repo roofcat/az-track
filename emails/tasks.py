@@ -21,7 +21,21 @@ def input_queue(email):
     try:
         email_client = EmailClient(email.empresa_id)
         email_client.enviar_correo_dte(email)
-    except Exception, e:
+    except Exception as e:
+        logger.error(e)
+
+
+@celery_app.task
+def send_emails_no_delivered(email):
+    logger.info("Entrando a la cola de envío de correos pendientes de envío.")
+    try:
+        emails = Email.get_emails_no_delivered()
+        for email in emails:
+            email_client = EmailClient(email.empresa_id)
+            email_client.enviar_correo_dte(email)
+            logger.info("Correo :" + email.correo + " Folio :" + email.numero_folio + " Enviado.")
+    except Exception as e:
+        logger.error("Error en send_emails_no_delivered")
         logger.error(e)
 
 
