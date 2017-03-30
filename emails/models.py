@@ -616,28 +616,31 @@ class Email(models.Model):
 
 
     @classmethod
-    def get_email(self, correo, numero_folio, tipo_dte,
-                  rut_emisor, resolucion_emisor, id_envio):
+    def get_email(self, correo, numero_folio, tipo_dte, rut_emisor,
+                  resolucion_emisor, id_envio, tipo_receptor=None):
         if isinstance(numero_folio, (str, basestring)):
             numero_folio = int(numero_folio, base=10)
-
         if isinstance(tipo_dte, (str, basestring)):
             tipo_dte = int(tipo_dte, base=10)
-
         if isinstance(resolucion_emisor, (str, basestring)):
             resolucion_emisor = int(resolucion_emisor, base=10)
-
         if isinstance(id_envio, (str, basestring)):
             id_envio = int(id_envio, base=10)
 
+        query_params = dict()
+        query_params['correo'] = correo
+        query_params['numero_folio'] = numero_folio
+        query_params['tipo_dte_id'] = tipo_dte
+        query_params['rut_emisor'] = rut_emisor
+        query_params['resolucion_emisor'] = resolucion_emisor
+        query_params['id_envio'] = id_envio
+
+        if tipo_receptor is not None:
+            query_params['tipo_receptor'] = tipo_receptor
+
         try:
             email = Email.objects.filter(
-                correo=correo,
-                numero_folio=numero_folio,
-                tipo_dte_id=tipo_dte,
-                rut_emisor=rut_emisor,
-                resolucion_emisor=resolucion_emisor,
-                id_envio=id_envio,
+                **query_params
             ).order_by('-input_date')[:1]
             logger.info(email)
             logger.info(len(email))

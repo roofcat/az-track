@@ -192,19 +192,21 @@ class SendGridApiWebhookView(TemplateView):
                 resolucion_emisor = str(body['resolucion_emisor']).decode('utf-8')
                 empresa = str(body['empresa']).decode('utf-8')
                 id_envio = str(body['id_envio']).decode('utf-8')
+                tipo_receptor = str(body['tipo_receptor']).decode('utf-8')
+
                 logger.info(evento_sendgrid)
             except Exception, e:
                 logger.error(e)
                 return HttpResponse(e)
 
             try:
-                if evento_sendgrid and correo and numero_folio and tipo_dte and rut_emisor and resolucion_emisor:
+                if evento_sendgrid and correo and numero_folio and tipo_dte and rut_emisor and resolucion_emisor and tipo_receptor:
                     correo = str(correo).lower()
                     numero_folio = int(numero_folio, base=10)
                     logger.info("es un webhook para el tracking")
 
                     if evento_sendgrid == 'processed':
-                        email = Email.get_email(correo, numero_folio, tipo_dte, rut_emisor, resolucion_emisor, id_envio)
+                        email = Email.get_email(correo, numero_folio, tipo_dte, rut_emisor, resolucion_emisor, id_envio, tipo_receptor)
                         logger.info(email)
 
                         if email is not None:
@@ -236,7 +238,7 @@ class SendGridApiWebhookView(TemplateView):
                             EmailLogEvent.write_event(evento_sendgrid, body)
 
                     elif evento_sendgrid == 'delivered':
-                        email = Email.get_email(correo, numero_folio, tipo_dte, rut_emisor, resolucion_emisor, id_envio)
+                        email = Email.get_email(correo, numero_folio, tipo_dte, rut_emisor, resolucion_emisor, id_envio, tipo_receptor)
                         logger.info(email)
 
                         if email is not None:
@@ -270,7 +272,7 @@ class SendGridApiWebhookView(TemplateView):
                             EmailLogEvent.write_event(evento_sendgrid, body)
 
                     elif evento_sendgrid == 'open':
-                        email = Email.get_email(correo, numero_folio, tipo_dte, rut_emisor, resolucion_emisor, id_envio)
+                        email = Email.get_email(correo, numero_folio, tipo_dte, rut_emisor, resolucion_emisor, id_envio, tipo_receptor)
                         logger.info(email)
 
                         if email is not None:
@@ -310,7 +312,7 @@ class SendGridApiWebhookView(TemplateView):
                             EmailLogEvent.write_event(evento_sendgrid, body)
 
                     elif evento_sendgrid == 'dropped':
-                        email = Email.get_email(correo, numero_folio, tipo_dte, rut_emisor, resolucion_emisor, id_envio)
+                        email = Email.get_email(correo, numero_folio, tipo_dte, rut_emisor, resolucion_emisor, id_envio, tipo_receptor)
 
                         if email is not None:
                             logger.info(email)
@@ -344,7 +346,7 @@ class SendGridApiWebhookView(TemplateView):
                             EmailLogEvent.write_event(evento_sendgrid, body)
 
                     elif evento_sendgrid == 'bounce':
-                        email = Email.get_email(correo, numero_folio, tipo_dte, rut_emisor, resolucion_emisor, id_envio)
+                        email = Email.get_email(correo, numero_folio, tipo_dte, rut_emisor, resolucion_emisor, id_envio, tipo_receptor)
 
                         if email is not None:
                             logger.info(email)
@@ -380,7 +382,7 @@ class SendGridApiWebhookView(TemplateView):
                             EmailLogEvent.write_event(evento_sendgrid, body)
 
                     elif evento_sendgrid == 'unsubscribe':
-                        email = Email.get_email(correo, numero_folio, tipo_dte, rut_emisor, resolucion_emisor, id_envio)
+                        email = Email.get_email(correo, numero_folio, tipo_dte, rut_emisor, resolucion_emisor, id_envio, tipo_receptor)
 
                         if email is not None:
                             logger.info(email)
@@ -412,7 +414,7 @@ class SendGridApiWebhookView(TemplateView):
                             EmailLogEvent.write_event(evento_sendgrid, body)
 
                     elif evento_sendgrid == 'click':
-                        email = Email.get_email(correo, numero_folio, tipo_dte, rut_emisor, resolucion_emisor, id_envio)
+                        email = Email.get_email(correo, numero_folio, tipo_dte, rut_emisor, resolucion_emisor, id_envio, tipo_receptor)
 
                         if email is not None:
                             logger.info(email)

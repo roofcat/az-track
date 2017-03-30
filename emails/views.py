@@ -40,6 +40,11 @@ class EmailDteInputView(APIView):
             params['rut_emisor'] = query_params['rut_emisor']
             params['resolucion_emisor'] = query_params['resolucion_emisor']
             params['id_envio'] = query_params['id_envio']
+            try:
+                params['tipo_receptor'] = query_params['tipo_receptor']
+            except:
+                params['tipo_receptor'] = None
+
             # imprimiendo parametros
             logger.info(params)
             # consulta
@@ -47,13 +52,13 @@ class EmailDteInputView(APIView):
             # imprimir resultado de la consulta
             logger.info(email)
             if email is not None:
-                logger.info("no es vacio")
+                logger.info("no es vacío")
                 # serializar
                 response = EmailTrackDTESerializer(email, many=False)
                 # responder
                 return Response(response.data)
             else:
-                logger.info("es vacio")
+                logger.info("es vacío")
                 return Response(status=status.HTTP_204_NO_CONTENT)
 
         except Exception, e:
