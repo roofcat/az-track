@@ -97,8 +97,7 @@ class SendDelayedEmails(TemplateView):
 
         if emails.count() > 0:
             logger.info("Se encontraron {0} correos.".format(emails.count()))
-            for email in emails:
-                send_emails_no_delivered(email)
+            send_emails_no_delivered(emails)
             return HttpResponse("Se encontraron {0} correos.".format(emails.count()))
         else:
             logger.info("No se encontraron correos")
