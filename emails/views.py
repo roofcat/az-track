@@ -4,6 +4,10 @@
 import logging
 
 
+from django.http import HttpResponse
+from django.views.generic import TemplateView
+
+
 from rest_framework import authentication, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -84,3 +88,18 @@ class EmailDteInputView(APIView):
         else:
             logger.error(email.errors)
             return Response(email.errors)
+
+
+class SendDelayedEmails(TemplateView):
+
+    def get(self, request, *args, **kwargs):
+        emails = Email.get_emails_no_delivered()
+
+        if emails.count() > 0:
+            logger.info("Se encontraron {0} correos.".format(emails.count()))
+            for email in emails:
+                input_queue(email)
+            return HttpResponse("Se encontraron {0} correo.".format(emails.count()))
+        else:
+            logger.info("No se encontraron correos")
+            return HttpResponse("No se encontraron correo.")

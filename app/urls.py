@@ -26,6 +26,9 @@ urlpatterns = [
     # en esta ruta entran las peticiones de correo desde un DTE
     url(r'^api/email/', EmailDteInputView.as_view()),
 
+    # rutas modulo emails
+    url(r'emails/', include('emails.urls', namespace='emails')),
+
     # rutas modulo empresas
     url(r'^empresas/', include('empresas.urls', namespace='empresas')),
 
