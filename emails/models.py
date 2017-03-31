@@ -655,10 +655,16 @@ class Email(models.Model):
             return None
 
     @classmethod
-    def get_emails_no_delivered(self):
-        emails = Email.objects.filter(
-            Q(processed_event__isnull=True) & Q(dropped_event__isnull=True)
-        ).order_by('id')
+    def get_emails_no_delivered(self, rut_empresa=None):
+        if rut_empresa is not None:
+            emails = Email.objects.filter(
+                Q(empresa=rut_empresa),
+                Q(processed_event__isnull=True) & Q(dropped_event__isnull=True)
+            ).order_by('id')
+        else:
+            emails = Email.objects.filter(
+                Q(processed_event__isnull=True) & Q(dropped_event__isnull=True)
+            ).order_by('id')
         if emails:
             logger.info("se encontraron la siguente cantidad de emails pendientes")
             logger.info(emails.count())

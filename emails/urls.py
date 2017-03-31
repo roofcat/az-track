@@ -8,5 +8,5 @@ from .views import SendDelayedEmails
 
 
 urlpatterns = [
-    url(r'enviar-pendientes/', SendDelayedEmails.as_view()),
+    url(r'enviar-pendientes/(?P<rut_empresa>[\S]+)/$', SendDelayedEmails.as_view()),
 ]

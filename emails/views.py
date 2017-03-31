@@ -17,6 +17,7 @@ from .models import Email
 from .serializers import EmailDteInputSerializer, EmailTrackDTESerializer
 from .tasks import input_queue, send_emails_no_delivered
 from utils.generics import to_unix_timestamp
+from utils.sendgrid_client import EmailClient
 
 
 logger = logging.getLogger(__name__)
@@ -92,12 +93,16 @@ class EmailDteInputView(APIView):
 
 class SendDelayedEmails(TemplateView):
 
-    def get(self, request, *args, **kwargs):
-        emails = Email.get_emails_no_delivered()
-
+    def get(self, request, rut_empresa, *args, **kwargs):
+        if rut_empresa:
+            logger.info("Rut empresa")
+            rut_empresa = str(rut_empresa)
+        emails = Email.get_emails_no_delivered(rut_empresa)
         if emails.count() > 0:
             logger.info("Se encontraron {0} correos.".format(emails.count()))
-            send_emails_no_delivered(emails)
+            for email in emails:
+                email_client = EmailClient(email.empresa_id)
+                email_client.enviar_correo_dte(email)
             return HttpResponse("Se encontraron {0} correos.".format(emails.count()))
         else:
             logger.info("No se encontraron correos")

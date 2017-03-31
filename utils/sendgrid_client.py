@@ -4,23 +4,18 @@
 import base64
 import logging
 
-
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers import mail
 
-
 from django.contrib.auth.models import User
-
 
 from configuraciones.models import SendgridConf, TemplateReporte
 from utils.generics import get_file_name_from_storage
-
 
 logger = logging.getLogger(__name__)
 
 
 class EmailClient(object):
-
     def __init__(self, empresa_id):
         self.empresa_id = empresa_id
         # llamar las configuraciones en la DB
@@ -30,7 +25,7 @@ class EmailClient(object):
         self.message = mail.Mail()
         self.message.set_from(
             mail.Email(self.email_config.asunto_email_dte,
-                  self.email_config.nombre_email_dte))
+                       self.email_config.nombre_email_dte))
         self.personalization = mail.Personalization()
 
     def enviar_correo_dte(self, correo):
@@ -57,7 +52,7 @@ class EmailClient(object):
         self.personalization.add_custom_arg(mail.CustomArg('id_envio', str(correo.id_envio)))
 
         logger.info(correo)
-        
+
         if correo.xml:
             attach = mail.Attachment()
             attach.set_filename(get_file_name_from_storage(correo.xml.name))
@@ -85,7 +80,7 @@ class EmailClient(object):
         # parametros de correo reporte
         self.message.set_from(
             mail.Email(self.email_config.asunto_email_reporte,
-                  self.email_config.nombre_email_reporte))
+                       self.email_config.nombre_email_reporte))
         # buscar usuario
         template_config = TemplateReporte.get_configuration(self.empresa_id)
         # preparar template del correo reporte
@@ -106,6 +101,7 @@ class EmailClient(object):
         # enviando el correo
         response = self.sg.client.mail.send.post(request_body=self.message.get())
         # imprimiendo respuesta
+        logger.info(response)
         logger.info(response.status_code)
         logger.info(response.headers)
         logger.info(response.body)
