@@ -15,7 +15,7 @@ from rest_framework.views import APIView
 
 from .models import Email
 from .serializers import EmailDteInputSerializer, EmailTrackDTESerializer
-from .tasks import input_queue
+from .tasks import input_queue, send_emails_no_delivered
 from utils.generics import to_unix_timestamp
 
 
@@ -98,8 +98,8 @@ class SendDelayedEmails(TemplateView):
         if emails.count() > 0:
             logger.info("Se encontraron {0} correos.".format(emails.count()))
             for email in emails:
-                input_queue(email)
-            return HttpResponse("Se encontraron {0} correo.".format(emails.count()))
+                send_emails_no_delivered(email)
+            return HttpResponse("Se encontraron {0} correos.".format(emails.count()))
         else:
             logger.info("No se encontraron correos")
-            return HttpResponse("No se encontraron correo.")
+            return HttpResponse("No se encontraron correos.")

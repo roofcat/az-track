@@ -26,10 +26,11 @@ def input_queue(email):
 
 
 @celery_app.task
-def send_emails_no_delivered():
+def send_emails_no_delivered(emails=None):
     logger.info("Entrando a la cola de envío de correos pendientes de envío.")
-    try:
+    if emails is None:
         emails = Email.get_emails_no_delivered()
+    try:
         for email in emails:
             email_client = EmailClient(email.empresa_id)
             email_client.enviar_correo_dte(email)
