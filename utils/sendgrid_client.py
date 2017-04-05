@@ -12,6 +12,7 @@ from django.contrib.auth.models import User
 from configuraciones.models import SendgridConf, TemplateReporte
 from utils.generics import get_file_name_from_storage
 
+
 logger = logging.getLogger(__name__)
 
 
