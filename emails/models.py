@@ -414,14 +414,14 @@ class Email(models.Model):
             logger.info("query de folio con empresa")
             emails = Email.objects.filter(
                 empresa=empresa, numero_folio=folio
-            ).order_by('-input_date')
+            ).select_related().order_by('-input_date')
         elif fallidos is True:
             logger.info("query de fallidos")
             emails = Email.objects.filter(
                 Q(input_date__range=(date_from, date_to)),
                 Q(empresa=empresa),
                 Q(bounce_event='bounce') | Q(dropped_event='dropped')
-            ).order_by('-input_date')
+            ).select_related().order_by('-input_date')
         else:
             params = dict()
             logger.info("query dinamica")
@@ -445,7 +445,9 @@ class Email(models.Model):
             if opcional3 is not None:
                 logger.info("con campo opcional3")
                 params['opcional3'] = opcional3
-            emails = Email.objects.filter(**params).order_by('-input_date')
+            emails = Email.objects.filter(
+                **params
+            ).select_related().order_by('-input_date')
 
         # imprimir consulta
         logger.info("query")
@@ -481,14 +483,14 @@ class Email(models.Model):
             logger.info("query de folio con empresa")
             emails = Email.objects.filter(
                 empresa=empresa, numero_folio=folio
-            ).order_by('-input_date')
+            ).select_related().order_by('-input_date')
         elif fallidos is True:
             logger.info("query de fallidos")
             emails = Email.objects.filter(
                 Q(input_date__range=(date_from, date_to)),
                 Q(empresa=empresa),
                 Q(bounce_event='bounce') | Q(dropped_event='dropped')
-            ).order_by('-input_date')
+            ).select_related().order_by('-input_date')
         else:
             params = dict()
             logger.info("query dinamica")
@@ -515,7 +517,9 @@ class Email(models.Model):
             if opcional3 is not None:
                 logger.info("con campo opcional3")
                 params['opcional3'] = opcional3
-            emails = Email.objects.filter(**params).order_by('-input_date')
+            emails = Email.objects.filter(
+                **params
+            ).select_related().order_by('-input_date')
 
         # imprimir consulta
         logger.info("query")
@@ -543,7 +547,7 @@ class Email(models.Model):
 
         emails = Email.objects.filter(
             **params
-        ).order_by('input_date')[:self.get_max_query_length(empresa)]
+        ).select_related().order_by('input_date')[:self.get_max_query_length(empresa)]
         if emails:
             return emails
         else:
@@ -554,7 +558,9 @@ class Email(models.Model):
         params = dict()
         params['input_date__range'] = (date_from, date_to)
         params['empresa'] = empresa
-        emails = Email.objects.filter(**params).order_by('input_date')
+        emails = Email.objects.filter(
+            **params
+        ).select_related().order_by('input_date')
         logger.info(emails.query)
         logger.info(emails.count())
         if emails:
@@ -575,7 +581,7 @@ class Email(models.Model):
 
         emails = Email.objects.filter(
             **params
-        ).order_by('input_date')[:self.get_max_query_length(empresa)]
+        ).select_related().order_by('input_date')[:self.get_max_query_length(empresa)]
         if emails:
             return emails
         else:
@@ -598,7 +604,7 @@ class Email(models.Model):
                 Q(tipo_receptor=tipo_receptor), Q(empresa=empresa),
                 Q(bounce_event='bounce') | Q(dropped_event='dropped')
             )
-        emails = emails.order_by('input_date')[:self.get_max_query_length(empresa)]
+        emails = emails.select_related().order_by('input_date')[:self.get_max_query_length(empresa)]
         logger.info(emails.query)
         logger.info(emails.count())
         if emails.count() > 0:
@@ -641,7 +647,7 @@ class Email(models.Model):
         try:
             email = Email.objects.filter(
                 **query_params
-            ).order_by('-input_date')[:1]
+            ).select_related().order_by('-input_date')[:1]
             logger.info(email)
             logger.info(len(email))
             logger.info(email.query)
