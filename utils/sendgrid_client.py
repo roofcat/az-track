@@ -115,5 +115,5 @@ class EmailClient(object):
             logger.info(response.headers)
             logger.info(response.body)
         except Exception as e:
-            logger.error("Error en enviar_correo_dte.send_report_to_user_with_attach")
+            logger.error("Error en EmailClient.send_report_to_user_with_attach")
             logger.error(e)

@@ -97,9 +97,12 @@ def export_task(**kwargs):
         logger.info("Existen datos para reporte")
         # Creación del documento
         report_file = create_tablib(data, empresa)
+        logger.info("Se ha creado el archivo tablib.")
 
         # evaluacion del formato del archivo reporte
         report_file_format = get_report_file_format(empresa)
+        logger.info("Se va a exportar archivo en formato %s", report_file_format)
+
         if report_file_format == 'xlsx':
             response_file = report_file.xlsx
             response_filename = file_name
@@ -112,8 +115,11 @@ def export_task(**kwargs):
 
         # evaluar si el archivo es comprimido en zip
         general_conf = GeneralConfiguration.get_configuration(empresa)
+        logger.info("Se obtiene configuración General de la Empresa")
+        logger.info(general_conf.__dict__)
 
         if general_conf is not None and general_conf.report_file_zipped:
+            logger.info("Intentando comprimir archivo reporte")
             # ejecutar proceso de comprimir reporte
             in_memory = StringIO()
 
@@ -122,6 +128,7 @@ def export_task(**kwargs):
 
             response_file = in_memory.getvalue()
             response_filename = file_name + '.zip'
+            logger.info("Archivo comprimido exitosamente.")
 
         # Crear objeto para enviarlo por correo
         data = dict()
