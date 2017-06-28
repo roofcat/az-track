@@ -193,10 +193,10 @@ LOGGING = {
     "disable_existing_loggers": False,
     "formatters": {
         "verbose": {
-            "format": "[%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d] \n %(message)s \n \n",
+            "format": "[%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d] %(message)s \n",
         },
         "simple": {
-            "format": "[%(levelname)s] \n %(message)s",
+            "format": "[%(levelname)s] %(message)s",
         },
     },
     "handlers": {

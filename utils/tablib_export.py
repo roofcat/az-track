@@ -11,7 +11,7 @@ from .generics import timestamp_to_date
 from empresas.models import CamposOpcionalesEmail
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("utils")
 
 
 """ Esta función genera excel en tiempo real de ejecución 
