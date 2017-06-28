@@ -303,10 +303,10 @@ LOGGING = {
             "when": LOGGING_WHEN,
             "formatter": "verbose",
         },
-        "sendgrid_file": {
+        "utils_file": {
             "level": LOGGING_LEVEL,
             "class": "logging.handlers.TimedRotatingFileHandler",
-            "filename": "logs/sendgrid.log",
+            "filename": "logs/utils.log",
             "backupCount": LOGGING_BACKUP_COUNT,
             "when": LOGGING_WHEN,
             "formatter": "verbose",
@@ -378,8 +378,8 @@ LOGGING = {
             "level": LOGGING_LEVEL,
             "propagate": True,
         },
-        "sendgrid": {
-            "handlers": ["sendgrid_file"],
+        "utils": {
+            "handlers": ["utils_file"],
             "level": LOGGING_LEVEL,
             "propagate": True,
         },
