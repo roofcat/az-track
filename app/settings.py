@@ -303,14 +303,6 @@ LOGGING = {
             "when": LOGGING_WHEN,
             "formatter": "verbose",
         },
-        "utils_file": {
-            "level": LOGGING_LEVEL,
-            "class": "logging.handlers.TimedRotatingFileHandler",
-            "filename": "logs/utils.log",
-            "backupCount": LOGGING_BACKUP_COUNT,
-            "when": LOGGING_WHEN,
-            "formatter": "verbose",
-        },
     },
     "loggers": {
         "django": {
@@ -375,11 +367,6 @@ LOGGING = {
         },
         "webhooks": {
             "handlers": ["webhooks_file"],
-            "level": LOGGING_LEVEL,
-            "propagate": True,
-        },
-        "utils": {
-            "handlers": ["utils_file"],
             "level": LOGGING_LEVEL,
             "propagate": True,
         },
