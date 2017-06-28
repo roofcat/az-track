@@ -136,8 +136,11 @@ def export_task(**kwargs):
         data['report'] = response_file
 
         # preparación de parametros
-        mail = EmailClient(empresa)
-        mail.send_report_to_user_with_attach(user_email, data)
-        logger.info("Reportes generado correctamente")
+        try:
+            mail = EmailClient(empresa)
+            mail.send_report_to_user_with_attach(user_email, data)
+            logger.info("Reportes generado correctamente")
+        except Exception as e:
+            logger.error("Error al enviar correo: ", e)
     else:
         logger.info("No se crear el archivo reporte por consulta vacía.")

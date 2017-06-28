@@ -303,6 +303,14 @@ LOGGING = {
             "when": LOGGING_WHEN,
             "formatter": "verbose",
         },
+        "sendgrid_file": {
+            "level": LOGGING_LEVEL,
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "filename": "logs/sendgrid.log",
+            "backupCount": LOGGING_BACKUP_COUNT,
+            "when": LOGGING_WHEN,
+            "formatter": "verbose",
+        },
     },
     "loggers": {
         "django": {
@@ -367,6 +375,11 @@ LOGGING = {
         },
         "webhooks": {
             "handlers": ["webhooks_file"],
+            "level": LOGGING_LEVEL,
+            "propagate": True,
+        },
+        "sendgrid": {
+            "handlers": ["sendgrid_file"],
             "level": LOGGING_LEVEL,
             "propagate": True,
         },

@@ -12,7 +12,6 @@ from django.contrib.auth.models import User
 from configuraciones.models import SendgridConf, TemplateReporte
 from utils.generics import get_file_name_from_storage
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -30,8 +29,8 @@ class EmailClient(object):
                            self.email_config.nombre_email_dte))
             self.personalization = mail.Personalization()
         except Exception as e:
-            logger.error("Error al instanciar EmailClient ")
-            logger.error(e)
+            logger.error("Error al instanciar EmailClient ", e)
+            raise Exception("Error al instanciar EmailClient ", e)
 
     def enviar_correo_dte(self, correo):
         try:
@@ -82,8 +81,8 @@ class EmailClient(object):
             logger.info(response.headers)
             logger.info(response.body)
         except Exception as e:
-            logger.error("Error EmailClient.enviar_correo_dte ")
-            logger.error(e)
+            logger.error("Error EmailClient.enviar_correo_dte ", e)
+            raise Exception("Error EmailClient.enviar_correo_dte ", e)
 
     def send_report_to_user_with_attach(self, user_email, report):
         try:
@@ -116,5 +115,5 @@ class EmailClient(object):
             logger.info(response.headers)
             logger.info(response.body)
         except Exception as e:
-            logger.error("Error en EmailClient.send_report_to_user_with_attach")
-            logger.error(e)
+            logger.error("Error en EmailClient.send_report_to_user_with_attach ", e)
+            raise Exception("Error en EmailClient.send_report_to_user_with_attach ", e)
