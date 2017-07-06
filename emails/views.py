@@ -81,11 +81,16 @@ class EmailDteInputView(APIView):
         email = EmailDteInputSerializer(data=data)
 
         if email.is_valid():
-            email.save()
-            logger.info(email.data)
-            correo = Email.objects.get(pk=email.data['id'])
-            input_queue(correo)
-            return Response({'status': 200})
+            try:
+                email.save()
+                logger.info(email.data)
+                correo = Email.objects.get(pk=email.data['id'])
+                input_queue(correo)
+                return Response({'status': 200})
+            except Exception as e:
+                logger.error("Error al guardar email")
+                logger.error(e)
+                return Response({'status': 500})
         else:
             logger.error(email.errors)
             return Response(email.errors)
