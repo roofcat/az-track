@@ -28,9 +28,11 @@ class EmailClient(object):
                 mail.Email(self.email_config.asunto_email_dte,
                            self.email_config.nombre_email_dte))
             self.personalization = mail.Personalization()
+            logger.info("Se instanció EmailClient para la empresa : " + empresa_id)
         except Exception as e:
-            logger.error("Error al instanciar EmailClient ", e)
-            raise Exception("Error al instanciar EmailClient ", e)
+            logger.error("Error al instanciar EmailClient")
+            logger.error(e)
+            raise Exception(e)
 
     def enviar_correo_dte(self, correo):
         try:
@@ -81,8 +83,9 @@ class EmailClient(object):
             logger.info(response.headers)
             logger.info(response.body)
         except Exception as e:
-            logger.error("Error EmailClient.enviar_correo_dte ", e)
-            raise Exception("Error EmailClient.enviar_correo_dte ", e)
+            logger.error("Error EmailClient.enviar_correo_dte ")
+            logger.error(e)
+            raise Exception(e)
 
     def send_report_to_user_with_attach(self, user_email, report):
         try:
@@ -115,5 +118,6 @@ class EmailClient(object):
             logger.info(response.headers)
             logger.info(response.body)
         except Exception as e:
-            logger.error("Error en EmailClient.send_report_to_user_with_attach ", e)
-            raise Exception("Error en EmailClient.send_report_to_user_with_attach ", e)
+            logger.error("Error en EmailClient.send_report_to_user_with_attach")
+            logger.error(e)
+            raise Exception(e)

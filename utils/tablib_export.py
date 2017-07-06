@@ -256,5 +256,6 @@ def create_tablib(data, rut_empresa):
                 my_tab.append(xlsx_row)
             return my_tab
     except Exception as e:
-        logger.error("Error al generar el archivo TABLIB ", e)
-        raise Exception("Error al generar el archivo TABLIB ", e)
+        logger.error("Error al generar el archivo TABLIB")
+        logger.error(e)
+        raise Exception(e)
