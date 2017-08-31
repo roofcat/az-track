@@ -34,8 +34,11 @@ def send_emails_no_delivered(emails=None):
         for email in emails:
             email_client = EmailClient(email.empresa_id)
             email_client.enviar_correo_dte(email)
+            print "Correo :" + email.correo + " Folio :" + email.numero_folio + " Enviado."
             logger.info("Correo :" + email.correo + " Folio :" + email.numero_folio + " Enviado.")
     except Exception as e:
+        print "Error en send_emails_no_delivered"
+        print e
         logger.error("Error en send_emails_no_delivered")
         logger.error(e)
 
